@@ -61,6 +61,9 @@ function DisplayContent({ games, onGames, onEditGame, editGame }) {
                   Platform: {game.platform}
                 </p>
                 <p className="text-sm text-gray-400">Genre: {game.genre}</p>
+                <p className="text-sm text-gray-200 italic mt-1">
+                  Notes: {game.notes}
+                </p>
               </div>
             </div>
             <span

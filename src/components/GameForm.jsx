@@ -5,6 +5,7 @@ function GameForm({ onGames, editGame, onEditGame }) {
   const [platform, setPlatform] = useState("");
   const [genre, setGenre] = useState("");
   const [status, setStatus] = useState("wishlist"); // default status
+  const [notes, setNotes] = useState("");
 
   // use effect so edit renders when editgame value changes
   useEffect(() => {
@@ -13,6 +14,7 @@ function GameForm({ onGames, editGame, onEditGame }) {
       setPlatform(editGame.platform);
       setGenre(editGame.genre);
       setStatus(editGame.status);
+      setNotes(editGame.notes);
     }
   }, [editGame]);
 
@@ -26,7 +28,7 @@ function GameForm({ onGames, editGame, onEditGame }) {
       onGames((games) =>
         games.map((game) =>
           game.id === editGame.id
-            ? { ...game, title, platform, genre, status } // update this game
+            ? { ...game, title, platform, genre, status, notes } // update this game
             : game,
         ),
       );
@@ -38,6 +40,7 @@ function GameForm({ onGames, editGame, onEditGame }) {
         platform,
         genre,
         status,
+        notes,
       };
       // add a new game
 
@@ -49,6 +52,7 @@ function GameForm({ onGames, editGame, onEditGame }) {
     setPlatform("");
     setGenre("");
     setStatus("wishlist");
+    setNotes("");
   }
 
   return (
@@ -113,6 +117,17 @@ function GameForm({ onGames, editGame, onEditGame }) {
             <option value="paused">Paused</option>
             <option value="dropped">Dropped</option>
           </select>
+        </div>
+
+        {/* Notes */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-gray-300 ">Notes</label>
+          <textarea
+            placeholder="Game tips, strategies, or notes..."
+            className="p-2 rounded bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
         </div>
 
         {/* Button */}

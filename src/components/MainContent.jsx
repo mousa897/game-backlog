@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DisplayContent from "./DisplayContent";
 import GameForm from "./GameForm";
 
@@ -9,21 +9,23 @@ const initialGames = [
     platform: "PC",
     genre: "Action RPG",
     status: "playing",
-  },
-  {
-    id: 3322,
-    title: "Baldur's Gate 3",
-    platform: "PC",
-    genre: "CRPG",
-    status: "completed",
+    notes: "its a hard game",
   },
 ];
 
 function MainContent() {
   // game list
-  const [games, setGames] = useState(initialGames);
+  const [games, setGames] = useState(() => {
+    const savedGames = localStorage.getItem("games");
+    return savedGames ? JSON.parse(savedGames) : initialGames;
+  });
+
   // to edit a game
   const [editGame, setEditGame] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("games", JSON.stringify(games));
+  }, [games]);
 
   return (
     <main className="bg-gray-700 min-h-screen">
