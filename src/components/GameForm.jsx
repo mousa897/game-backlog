@@ -1,11 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-function GameForm({ onGames, editGame, onEditGame }) {
+function GameForm({
+  onGames,
+  editGame,
+  onEditGame,
+  searchQuery,
+  onSearchQuery,
+  fetchGames,
+  searchResults,
+}) {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
   const [genre, setGenre] = useState("");
   const [status, setStatus] = useState("wishlist"); // default status
   const [notes, setNotes] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const wrapperRef = useRef(null);
+
+  // wrapper useEffect
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // use effect so edit renders when editgame value changes
   useEffect(() => {
@@ -62,6 +87,47 @@ function GameForm({ onGames, editGame, onEditGame }) {
         onSubmit={handleSubmit}
       >
         <h2 className="text-2xl font-bold text-center mb-2">Add a Game</h2>
+
+        {/* Search Game */}
+        <div className="relative flex flex-col" ref={wrapperRef}>
+          <label className="mb-1 text-gray-300">Search Game</label>
+          <input
+            type="text"
+            placeholder="Search for a game..."
+            className="p-2 mb-2 rounded bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={searchQuery}
+            onChange={(e) => {
+              onSearchQuery(e.target.value);
+              setShowDropdown(true);
+              fetchGames(e.target.value);
+            }}
+          />
+          {showDropdown && searchResults.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 p-2 rounded max-h-60 overflow-y-auto z-50">
+              {" "}
+              {searchResults.map((game) => (
+                <div
+                  key={game.id}
+                  className="flex justify-between p-2 hover:bg-gray-700 rounded cursor-pointer"
+                  onClick={() => {
+                    setTitle(game.name);
+                    setGenre(game.genres?.[0]?.name || "");
+                    setPlatform(game.platforms?.[0]?.platform?.name || "");
+                    setShowDropdown(false);
+                    onSearchQuery("");
+                  }} // when a result is clicked, auto-fill the form
+                >
+                  <p> {game.name}</p>
+                  <p>
+                    {game.released
+                      ? new Date(game.released).toLocaleDateString()
+                      : "N/A"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Title */}
         <div className="flex flex-col">
