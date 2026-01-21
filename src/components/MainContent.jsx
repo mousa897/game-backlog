@@ -32,13 +32,16 @@ function MainContent() {
     localStorage.setItem("games", JSON.stringify(games));
   }, [games]);
 
+  // api key
+  const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+
   // async function to fetch api
   async function fetchGames(query) {
     if (!query) return;
 
     try {
       const response = await fetch(
-        `https://api.rawg.io/api/games?key=5583c34c18ee4c6f86e5b456cd15a005&search=${query}`,
+        `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${query}`,
       );
       const data = await response.json();
       setSearchResults(data.results);
