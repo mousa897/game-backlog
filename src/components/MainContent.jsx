@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DisplayContent from "./DisplayContent";
 import GameForm from "./GameForm";
 
@@ -36,19 +36,36 @@ function MainContent() {
   const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
   // async function to fetch api
-  async function fetchGames(query) {
-    if (!query) return;
+  const fetchGames = useCallback(
+    async (query) => {
+      if (!query) return;
 
-    try {
-      const response = await fetch(
-        `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${query}`,
-      );
-      const data = await response.json();
-      setSearchResults(data.results);
-    } catch (error) {
-      console.error("Error fetching games:", error);
+      try {
+        const response = await fetch(
+          `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${query}`,
+        );
+        const data = await response.json();
+        setSearchResults(data.results);
+      } catch (error) {
+        console.error("Error fetching games:", error);
+      }
+    },
+    [RAWG_API_KEY],
+  );
+
+  // debounce effect
+  useEffect(() => {
+    if (!searchQuery) {
+      setSearchResults([]);
+      return;
     }
-  }
+
+    const timeout = setTimeout(() => {
+      fetchGames(searchQuery);
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, [searchQuery, fetchGames]);
 
   return (
     <main className="bg-gray-700 min-h-screen">
@@ -60,6 +77,7 @@ function MainContent() {
         onSearchQuery={setSearchQuery}
         fetchGames={fetchGames}
         searchResults={searchResults}
+        onSearchResults={setSearchResults}
       />
       <DisplayContent
         games={games}

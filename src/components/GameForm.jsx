@@ -6,7 +6,7 @@ function GameForm({
   onEditGame,
   searchQuery,
   onSearchQuery,
-  fetchGames,
+
   searchResults,
 }) {
   const [title, setTitle] = useState("");
@@ -99,7 +99,6 @@ function GameForm({
             onChange={(e) => {
               onSearchQuery(e.target.value);
               setShowDropdown(true);
-              fetchGames(e.target.value);
             }}
           />
           {showDropdown && searchResults.length > 0 && (

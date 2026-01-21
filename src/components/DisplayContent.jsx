@@ -4,7 +4,7 @@ function DisplayContent({ games, onGames, onEditGame, editGame }) {
   const [showEdit, setShowEdit] = useState(false);
 
   function handleDelete(id) {
-    onGames(games.filter((game) => game.id != id));
+    onGames(games.filter((game) => game.id !== id));
   }
 
   // later, this will accept props (like the games list)
@@ -29,10 +29,10 @@ function DisplayContent({ games, onGames, onEditGame, editGame }) {
       </div>
 
       <ul className="space-y-3">
-        {games.map((game, index) => (
+        {games.map((game) => (
           <li
             className="bg-gray-700 p-3 rounded flex justify-between items-center"
-            key={index}
+            key={game.id}
           >
             <div className="flex items-center">
               {showEdit && (
