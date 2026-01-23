@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import DisplayContent from "./DisplayContent";
 import GameForm from "./GameForm";
+import GameOfTheDay from "./GameOfTheDay";
 
 const initialGames = [
   {
@@ -85,6 +86,7 @@ function MainContent() {
         editGame={editGame}
         onEditGame={setEditGame}
       />
+      <GameOfTheDay />
     </main>
   );
 }
