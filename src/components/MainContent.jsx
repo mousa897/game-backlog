@@ -69,7 +69,7 @@ function MainContent() {
   }, [searchQuery, fetchGames]);
 
   return (
-    <main className="bg-gray-700 min-h-screen">
+    <main className="bg-gray-700 min-h-screen flex-col items-center">
       <GameForm
         onGames={setGames}
         editGame={editGame}
