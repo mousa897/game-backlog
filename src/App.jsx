@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import Backlog from "./pages/Backlog";
+import Backlog from "./pages/Backlog.jsx";
 
 function App() {
   return (

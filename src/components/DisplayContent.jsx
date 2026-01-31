@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useGames } from "../context/UseGames";
 
-function DisplayContent({ games, onGames, onEditGame, editGame }) {
+function DisplayContent() {
   const [showEdit, setShowEdit] = useState(false);
 
+  const { games, setGames, editGame, setEditGame } = useGames();
+
   function handleDelete(id) {
-    onGames(games.filter((game) => game.id !== id));
+    setGames(games.filter((game) => game.id !== id));
   }
 
   // later, this will accept props (like the games list)
@@ -19,7 +22,7 @@ function DisplayContent({ games, onGames, onEditGame, editGame }) {
 
             // to exit edit mode
             if (showEdit && editGame) {
-              onEditGame(null);
+              setEditGame(null);
             }
           }}
           className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
@@ -47,7 +50,7 @@ function DisplayContent({ games, onGames, onEditGame, editGame }) {
                   </button>
 
                   <button
-                    onClick={() => onEditGame(game)}
+                    onClick={() => setEditGame(game)}
                     className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
                   >
                     Edit

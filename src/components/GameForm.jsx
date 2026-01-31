@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { useGames } from "../context/UseGames";
 
 function GameForm({
-  onGames,
-  editGame,
-  onEditGame,
   searchQuery,
   onSearchQuery,
 
@@ -15,6 +13,8 @@ function GameForm({
   const [status, setStatus] = useState("wishlist"); // default status
   const [notes, setNotes] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const { setGames, editGame, setEditGame } = useGames();
 
   const wrapperRef = useRef(null);
 
@@ -50,14 +50,14 @@ function GameForm({
 
     if (editGame) {
       // UPDATE MODE
-      onGames((games) =>
+      setGames((games) =>
         games.map((game) =>
           game.id === editGame.id
             ? { ...game, title, platform, genre, status, notes } // update this game
             : game,
         ),
       );
-      onEditGame(null); // back to null
+      setEditGame(null); // back to null
     } else {
       const newGame = {
         id: crypto.randomUUID(),
@@ -69,7 +69,7 @@ function GameForm({
       };
       // add a new game
 
-      onGames((prevGames) => [...prevGames, newGame]);
+      setGames((prevGames) => [...prevGames, newGame]);
     } //  add the new game to list
 
     // clear the form

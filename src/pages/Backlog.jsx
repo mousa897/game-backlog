@@ -2,31 +2,15 @@ import { useCallback, useEffect, useState } from "react";
 import DisplayContent from "../components/DisplayContent";
 import GameForm from "../components/GameForm";
 import GameOfTheDay from "../components/GameOfTheDay";
-
-const initialGames = [
-  {
-    id: 2233,
-    title: "Elden Ring",
-    platform: "PC",
-    genre: "Action RPG",
-    status: "playing",
-    notes: "its a hard game",
-  },
-];
+import { useGames } from "../context/UseGames";
 
 function Backlog() {
-  // game list
-  const [games, setGames] = useState(() => {
-    const savedGames = localStorage.getItem("games");
-    return savedGames ? JSON.parse(savedGames) : initialGames;
-  });
+  const { games } = useGames();
 
   // Search Game Results
   const [searchResults, setSearchResults] = useState([]);
   // Search Query
   const [searchQuery, setSearchQuery] = useState("");
-  // to edit a game
-  const [editGame, setEditGame] = useState(null);
 
   // save locally
   useEffect(() => {
@@ -71,21 +55,13 @@ function Backlog() {
   return (
     <main className="bg-gray-700 min-h-screen flex-col items-center">
       <GameForm
-        onGames={setGames}
-        editGame={editGame}
-        onEditGame={setEditGame}
         searchQuery={searchQuery}
         onSearchQuery={setSearchQuery}
         fetchGames={fetchGames}
         searchResults={searchResults}
         onSearchResults={setSearchResults}
       />
-      <DisplayContent
-        games={games}
-        onGames={setGames}
-        editGame={editGame}
-        onEditGame={setEditGame}
-      />
+      <DisplayContent />
       <GameOfTheDay />
     </main>
   );
