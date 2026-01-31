@@ -1,11 +1,14 @@
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import MainContent from "./components/MainContent";
+import Backlog from "./pages/Backlog";
 
 function App() {
   return (
     <>
       <Header />
-      <MainContent />
+      <Routes>
+        <Route path="/" element={<Backlog />} />
+      </Routes>
     </>
   );
 }

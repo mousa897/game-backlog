@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import DisplayContent from "./DisplayContent";
-import GameForm from "./GameForm";
-import GameOfTheDay from "./GameOfTheDay";
+import DisplayContent from "../components/DisplayContent";
+import GameForm from "../components/GameForm";
+import GameOfTheDay from "../components/GameOfTheDay";
 
 const initialGames = [
   {
@@ -14,7 +14,7 @@ const initialGames = [
   },
 ];
 
-function MainContent() {
+function Backlog() {
   // game list
   const [games, setGames] = useState(() => {
     const savedGames = localStorage.getItem("games");
@@ -91,4 +91,4 @@ function MainContent() {
   );
 }
 
-export default MainContent;
+export default Backlog;
