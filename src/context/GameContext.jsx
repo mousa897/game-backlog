@@ -1,8 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 // Create Context
-// eslint-disable-next-line react-refresh/only-export-components
-export const GameContext = createContext();
+
+const GameContext = createContext();
 
 const initialGames = [
   {
@@ -43,4 +43,8 @@ export function GameProvider({ children }) {
       {/* everything inside <GameProvider> can use this state */}
     </GameContext.Provider>
   );
+}
+// eslint-disable-next-line react-refresh/only-export-components
+export function useGames() {
+  return useContext(GameContext);
 }

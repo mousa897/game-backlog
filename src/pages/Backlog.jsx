@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import DisplayContent from "../components/DisplayContent";
 import GameForm from "../components/GameForm";
 import GameOfTheDay from "../components/GameOfTheDay";
-import { useGames } from "../context/UseGames";
+import { useGames } from "../context/GameContext";
 
 function Backlog() {
   const { games } = useGames();

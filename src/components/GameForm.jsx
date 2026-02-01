@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useGames } from "../context/UseGames";
+import { useGames } from "../context/GameContext";
 
 function GameForm({
   searchQuery,

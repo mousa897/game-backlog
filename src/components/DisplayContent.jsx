@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGames } from "../context/UseGames";
+import { useGames } from "../context/GameContext";
 
 function DisplayContent() {
   const [showEdit, setShowEdit] = useState(false);
@@ -10,7 +10,6 @@ function DisplayContent() {
     setGames(games.filter((game) => game.id !== id));
   }
 
-  // later, this will accept props (like the games list)
   return (
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white mt-8 w-full max-w-3xl mx-auto">
       <div className="flex justify-between items-center mb-4">
