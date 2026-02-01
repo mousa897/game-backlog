@@ -34,7 +34,7 @@ function GameOfTheDay() {
   }, [RAWG_API_KEY]);
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded-xl shadow-md mx-auto w-fit mt-5">
+    <div className="bg-gray-800 text-white p-4 rounded-xl shadow-md mx-auto w-fit mt-5 border border-gray-700">
       <h2 className="text-xl font-bold mb-2">Game Of The Day</h2>
       {game ? (
         <>

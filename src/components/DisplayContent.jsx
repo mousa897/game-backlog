@@ -11,7 +11,7 @@ function DisplayContent() {
   }
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white mt-8 w-full max-w-3xl mx-auto">
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white mt-8 w-full max-w-3xl mx-auto border border-gray-700">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-center">Your Games</h2>
         <button

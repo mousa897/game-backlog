@@ -2,20 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import DisplayContent from "../components/DisplayContent";
 import GameForm from "../components/GameForm";
 import GameOfTheDay from "../components/GameOfTheDay";
-import { useGames } from "../context/GameContext";
 
 function Backlog() {
-  const { games } = useGames();
-
   // Search Game Results
   const [searchResults, setSearchResults] = useState([]);
   // Search Query
   const [searchQuery, setSearchQuery] = useState("");
-
-  // save locally
-  useEffect(() => {
-    localStorage.setItem("games", JSON.stringify(games));
-  }, [games]);
 
   // api key
   const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -53,16 +45,18 @@ function Backlog() {
   }, [searchQuery, fetchGames]);
 
   return (
-    <main className="bg-gray-700 min-h-screen flex-col items-center">
-      <GameForm
-        searchQuery={searchQuery}
-        onSearchQuery={setSearchQuery}
-        fetchGames={fetchGames}
-        searchResults={searchResults}
-        onSearchResults={setSearchResults}
-      />
-      <DisplayContent />
-      <GameOfTheDay />
+    <main className="bg-gray-900 min-h-screen flex-col items-center">
+      <div className="space-y-12">
+        <GameForm
+          searchQuery={searchQuery}
+          onSearchQuery={setSearchQuery}
+          fetchGames={fetchGames}
+          searchResults={searchResults}
+          onSearchResults={setSearchResults}
+        />
+        <DisplayContent />
+        <GameOfTheDay />
+      </div>
     </main>
   );
 }

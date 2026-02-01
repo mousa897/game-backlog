@@ -83,7 +83,7 @@ function GameForm({
   return (
     <div className="flex justify-center p-10">
       <form
-        className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4"
+        className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4 border border-gray-700"
         onSubmit={handleSubmit}
       >
         <h2 className="text-2xl font-bold text-center mb-2">Add a Game</h2>
