@@ -2,9 +2,25 @@ import { useState } from "react";
 import { useGames } from "../context/GameContext";
 
 function DisplayContent() {
+  // show the edit button
   const [showEdit, setShowEdit] = useState(false);
 
+  // filter states
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [platformFilter, setPlatformFilter] = useState("all");
+
+  // useGames from context
   const { games, setGames, editGame, setEditGame } = useGames();
+
+  // filter games
+  const filteredGames = games.filter((game) => {
+    const statusMatch = statusFilter === "all" || game.status === statusFilter;
+
+    const platformMatch =
+      platformFilter === "all" || game.platform === platformFilter;
+
+    return statusMatch && platformMatch;
+  });
 
   function handleDelete(id) {
     setGames(games.filter((game) => game.id !== id));
@@ -14,6 +30,35 @@ function DisplayContent() {
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white mt-8 w-full max-w-3xl mx-auto border border-gray-700">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-center">Your Games</h2>
+        <div className="flex gap-4 ">
+          <label className="flex items-center text-sm text-gray-400">
+            Filters :
+          </label>
+          <select
+            className="p-2 rounded bg-gray-700 text-white"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="completed">Completed</option>
+            <option value="playing">Playing</option>
+            <option value="paused">Paused</option>
+            <option value="dropped">Dropped</option>
+            <option value="wishlist">Wishlist</option>
+          </select>
+          <select
+            className="p-2 rounded bg-gray-700 text-white"
+            value={platformFilter}
+            onChange={(e) => setPlatformFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="PC">PC</option>
+            <option value="Playstation">Playstation</option>
+            <option value="Xbox">Xbox</option>
+            <option value="Switch">Switch</option>
+          </select>
+        </div>
+
         <button
           // to show edit button
           onClick={() => {
@@ -29,9 +74,8 @@ function DisplayContent() {
           {showEdit ? "Hide" : "Edit"}
         </button>
       </div>
-
       <ul className="space-y-3">
-        {games.map((game) => (
+        {filteredGames.map((game) => (
           <li
             className="bg-gray-700 p-3 rounded flex justify-between items-center"
             key={game.id}
