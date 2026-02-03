@@ -12,6 +12,7 @@ const initialGames = [
     genre: "Action RPG",
     status: "playing",
     notes: "its a hard game",
+    image: "https://media.rawg.io/media/games/xyz/elden_ring.jpg",
   },
 ];
 

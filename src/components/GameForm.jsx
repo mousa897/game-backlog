@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useGames } from "../context/GameContext";
 
-function GameForm({
-  searchQuery,
-  onSearchQuery,
-
-  searchResults,
-}) {
+function GameForm({ searchQuery, onSearchQuery, searchResults }) {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
   const [genre, setGenre] = useState("");
   const [status, setStatus] = useState("wishlist"); // default status
   const [notes, setNotes] = useState("");
+  const [image, setImage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
   const { setGames, editGame, setEditGame } = useGames();
@@ -66,6 +62,7 @@ function GameForm({
         genre,
         status,
         notes,
+        image,
       };
       // add a new game
 
@@ -78,6 +75,7 @@ function GameForm({
     setGenre("");
     setStatus("wishlist");
     setNotes("");
+    setImage("");
   }
 
   return (
@@ -112,6 +110,7 @@ function GameForm({
                     setTitle(game.name);
                     setGenre(game.genres?.[0]?.name || "");
                     setPlatform(game.platforms?.[0]?.platform?.name || "");
+                    setImage(game.background_image || "");
                     setShowDropdown(false);
                     onSearchQuery("");
                   }} // when a result is clicked, auto-fill the form

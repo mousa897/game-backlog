@@ -100,7 +100,11 @@ function DisplayContent() {
                   </button>
                 </>
               )}
-
+              <img
+                src={game.image || "https://via.placeholder.com/80"} // fallback if no image
+                alt={game.title}
+                className="w-20 h-20 object-cover rounded mr-4"
+              />
               <div>
                 <h3 className="font-semibold">{game.title}</h3>
                 <p className="text-sm text-gray-300">
