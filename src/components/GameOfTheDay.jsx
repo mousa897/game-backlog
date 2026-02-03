@@ -38,7 +38,13 @@ function GameOfTheDay() {
       <h2 className="text-xl font-bold mb-2">Game Of The Day</h2>
       {game ? (
         <>
-          {" "}
+          <div className="flex justify-center mt-2">
+            <img
+              src={game.background_image}
+              alt={game.name}
+              className="w-40 h-40 object-cover rounded"
+            />
+          </div>
           <p className="text-lg font-semibold">{game.name}</p>
           <p className="text-sm text-gray-400">
             Released: {game.released || "Unknown"}
