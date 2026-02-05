@@ -36,6 +36,7 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
       setGenre(editGame.genre);
       setStatus(editGame.status);
       setNotes(editGame.notes);
+      setImage(editGame.image || "");
     }
   }, [editGame]);
 
@@ -84,7 +85,9 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
         className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4 border border-gray-700"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl font-bold text-center mb-2">Add a Game</h2>
+        <h2 className="text-2xl font-bold text-center mb-2">
+          {editGame ? "Edit Game" : "Add Game"}
+        </h2>
 
         {/* Search Game */}
         <div className="relative flex flex-col" ref={wrapperRef}>
@@ -115,6 +118,11 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
                     onSearchQuery("");
                   }} // when a result is clicked, auto-fill the form
                 >
+                  <img
+                    src={game.background_image}
+                    alt={game.name}
+                    className="w-20 h-20 object-cover rounded mr-4"
+                  />
                   <p> {game.name}</p>
                   <p>
                     {game.released

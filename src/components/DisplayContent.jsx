@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGames } from "../context/GameContext";
 
 function DisplayContent() {
@@ -13,14 +13,17 @@ function DisplayContent() {
   const { games, setGames, editGame, setEditGame } = useGames();
 
   // filter games
-  const filteredGames = games.filter((game) => {
-    const statusMatch = statusFilter === "all" || game.status === statusFilter;
+  const filteredGames = useMemo(() => {
+    return games.filter((game) => {
+      const statusMatch =
+        statusFilter === "all" || game.status === statusFilter;
 
-    const platformMatch =
-      platformFilter === "all" || game.platform === platformFilter;
+      const platformMatch =
+        platformFilter === "all" || game.platform === platformFilter;
 
-    return statusMatch && platformMatch;
-  });
+      return statusMatch && platformMatch;
+    });
+  }, [games, statusFilter, platformFilter]);
 
   function handleDelete(id) {
     setGames(games.filter((game) => game.id !== id));
@@ -122,7 +125,9 @@ function DisplayContent() {
                   ? "text-green-400"
                   : game.status === "playing"
                     ? "text-yellow-400"
-                    : "text-blue-400"
+                    : game.status === "dropped"
+                      ? "text-red-400"
+                      : "text-blue-400"
               }`}
             >
               {game.status}

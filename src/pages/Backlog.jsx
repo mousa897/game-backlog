@@ -39,14 +39,16 @@ function Backlog() {
 
     const timeout = setTimeout(() => {
       fetchGames(searchQuery);
-    }, 100);
+    }, 300);
 
     return () => clearTimeout(timeout);
   }, [searchQuery, fetchGames]);
 
   return (
-    <main className="bg-gray-900 min-h-screen flex-col items-center">
+    <main className="bg-gray-900 min-h-screen overflow-hidden p-6">
       <div className="space-y-12">
+        <GameOfTheDay />
+
         <GameForm
           searchQuery={searchQuery}
           onSearchQuery={setSearchQuery}
@@ -55,7 +57,6 @@ function Backlog() {
           onSearchResults={setSearchResults}
         />
         <DisplayContent />
-        <GameOfTheDay />
       </div>
     </main>
   );
