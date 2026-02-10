@@ -30,7 +30,7 @@ function DisplayContent() {
   }
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white mt-8 w-full max-w-3xl mx-auto border border-gray-700">
+    <div className="bg-gray-800 rounded-lg shadow-lg text-white mt-8 border border-gray-700 p-6 flex-7">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-center">Your Games</h2>
         <div className="flex gap-4 ">
@@ -57,6 +57,7 @@ function DisplayContent() {
             <option value="all">All</option>
             <option value="PC">PC</option>
             <option value="Playstation">Playstation</option>
+            <option value="PS5">PS5</option>
             <option value="Xbox">Xbox</option>
             <option value="Switch">Switch</option>
           </select>

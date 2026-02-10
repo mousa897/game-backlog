@@ -80,7 +80,7 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
   }
 
   return (
-    <div className="flex justify-center p-10">
+    <div className="flex justify-center mt-8 w-[35%] flex-3">
       <form
         className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4 border border-gray-700"
         onSubmit={handleSubmit}
@@ -103,12 +103,11 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
             }}
           />
           {showDropdown && searchResults.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 p-2 rounded max-h-60 overflow-y-auto z-50">
-              {" "}
+            <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 rounded max-h-70 overflow-auto border z-1">
               {searchResults.map((game) => (
                 <div
                   key={game.id}
-                  className="flex justify-between p-2 hover:bg-gray-700 rounded cursor-pointer"
+                  className="flex gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer border-b border-gray-400"
                   onClick={() => {
                     setTitle(game.name);
                     setGenre(game.genres?.[0]?.name || "");
@@ -123,12 +122,14 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
                     alt={game.name}
                     className="w-20 h-20 object-cover rounded mr-4"
                   />
-                  <p> {game.name}</p>
-                  <p>
-                    {game.released
-                      ? new Date(game.released).toLocaleDateString()
-                      : "N/A"}
-                  </p>
+                  <div className="flex flex-col justify-start">
+                    <p> {game.name}</p>
+                    <p>
+                      {game.released
+                        ? new Date(game.released).toLocaleDateString()
+                        : "N/A"}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
