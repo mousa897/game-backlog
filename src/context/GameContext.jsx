@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 // Create Context
 
@@ -23,6 +29,46 @@ export function GameProvider({ children }) {
     return savedGames ? JSON.parse(savedGames) : initialGames;
   });
 
+  // Search Game Results
+  const [searchResults, setSearchResults] = useState([]);
+  // Search Query
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // api key
+  const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+
+  // async function to fetch api
+  const fetchGames = useCallback(
+    async (query) => {
+      if (!query) return;
+
+      try {
+        const response = await fetch(
+          `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${query}`,
+        );
+        const data = await response.json();
+        setSearchResults(data.results);
+      } catch (error) {
+        console.error("Error fetching games:", error);
+      }
+    },
+    [RAWG_API_KEY],
+  );
+
+  // debounce effect
+  useEffect(() => {
+    if (!searchQuery) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      fetchGames(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [searchQuery, fetchGames]);
+
   // to edit a game
   const [editGame, setEditGame] = useState(null);
 
@@ -38,6 +84,8 @@ export function GameProvider({ children }) {
         setGames,
         editGame,
         setEditGame,
+        searchResults,
+        setSearchQuery,
       }}
     >
       {children}

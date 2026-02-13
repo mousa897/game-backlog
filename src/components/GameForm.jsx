@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGames } from "../context/GameContext";
 
-function GameForm({ searchQuery, onSearchQuery, searchResults }) {
+function GameForm() {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
   const [genre, setGenre] = useState("");
@@ -10,7 +10,14 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
   const [image, setImage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const { setGames, editGame, setEditGame } = useGames();
+  const {
+    setGames,
+    editGame,
+    setEditGame,
+    searchQuery,
+    setSearchQuery,
+    searchResults,
+  } = useGames();
 
   const wrapperRef = useRef(null);
 
@@ -98,7 +105,7 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
             className="p-2 mb-2 rounded bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={searchQuery}
             onChange={(e) => {
-              onSearchQuery(e.target.value);
+              setSearchQuery(e.target.value);
               setShowDropdown(true);
             }}
           />
@@ -114,7 +121,7 @@ function GameForm({ searchQuery, onSearchQuery, searchResults }) {
                     setPlatform(game.platforms?.[0]?.platform?.name || "");
                     setImage(game.background_image || "");
                     setShowDropdown(false);
-                    onSearchQuery("");
+                    setSearchQuery("");
                   }} // when a result is clicked, auto-fill the form
                 >
                   <img
