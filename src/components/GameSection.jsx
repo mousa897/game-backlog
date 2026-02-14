@@ -6,7 +6,7 @@ function GameSection({ title, endpoint }) {
   const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
   useEffect(() => {
-    fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=8${endpoint}`)
+    fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=4${endpoint}`)
       .then((res) => res.json())
       .then((data) => setGames(data.results));
   }, [endpoint, API_KEY]);
@@ -15,10 +15,10 @@ function GameSection({ title, endpoint }) {
     <section className="mb-10">
       <h2 className="text-2xl font-bold mb-4 text-white">{title}</h2>
 
-      <div className="grid grid-cols-4 gap-4">
-        {games.map((game) => (
-          <Link to={`/game/${game.id}`} key={game.id}>
-            <div className="bg-gray-800 rounded hover:scale-105 transition">
+      <div className="flex gap-4">
+        {games.slice(0, 4).map((game) => (
+          <Link to={`/game/${game.id}`} key={game.id} className="w-full">
+            <div className="bg-gray-800 rounded hover:scale-105 transition w-full">
               <img
                 src={game.background_image}
                 alt={game.name}
