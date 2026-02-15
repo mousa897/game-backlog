@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useGames } from "../context/GameContext";
 
-function DisplayContent() {
+function DisplayContent({ autoScrollRef }) {
   // show the edit button
   const [showEdit, setShowEdit] = useState(false);
 
@@ -27,14 +27,19 @@ function DisplayContent() {
 
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg text-white mt-8 border border-gray-700 p-6 w-full lg:w-2/3">
+      {/* HEADER SECTION*/}
       <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between gap-4 mb-4">
         <h2 className="text-2xl font-semibold text-center sm:text-left">
           Your Games
         </h2>
+
+        {/* filter */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
           <label className="flex items-center text-sm text-gray-400">
             Filter :
           </label>
+
+          {/* Dropdown that updates statusFilter state */}
           <select
             className="p-2 rounded bg-gray-700 text-white"
             value={statusFilter}
@@ -49,12 +54,12 @@ function DisplayContent() {
           </select>
         </div>
 
+        {/* edit mode toggle */}
         <button
-          // to show edit button
           onClick={() => {
             setShowEdit(!showEdit);
 
-            // to exit edit mode
+            // If exiting edit mode, clear selected editGame
             if (showEdit && editGame) {
               setEditGame(null);
             }
@@ -64,38 +69,54 @@ function DisplayContent() {
           {showEdit ? "Hide" : "Edit"}
         </button>
       </div>
+
+      {/* game list */}
       <ul className="space-y-3">
         {filteredGames.map((game) => (
           <li
-            className="bg-gray-700 p-3 rounded flex justify-between items-center"
+            // Each individual game card
+            className="bg-gray-700 p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
             key={game.id}
           >
-            <div className="flex items-center">
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
               {showEdit && (
-                <>
+                <div className="flex gap-2 sm:order-none order-first">
                   <button
                     onClick={() => handleDelete(game.id)}
                     className="mr-4 flex items-center justify-center w-8 h-8 rounded-full 
-               bg-red-600 hover:bg-red-700 text-white font-bold 
-               transition-colors"
+             bg-red-600 hover:bg-red-700 text-white font-bold 
+             transition-colors"
                   >
                     X
                   </button>
 
+                  {/* Edit button sets selected game into edit mode */}
                   <button
-                    onClick={() => setEditGame(game)}
+                    onClick={() => {
+                      setEditGame(game); // scroll back to form to edit
+                      if (autoScrollRef?.current) {
+                        autoScrollRef.current.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }
+                    }}
                     className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
                   >
                     Edit
                   </button>
-                </>
+                </div>
               )}
+
+              {/* Game thumbnail image */}
               <img
-                src={game.image || "https://via.placeholder.com/80"} // fallback if no image
+                src={game.image || "https://via.placeholder.com/80"}
                 alt={game.title}
                 className="w-20 h-20 object-cover rounded mr-4"
               />
-              <div>
+
+              {/* Game information text */}
+              <div className="text-center">
                 <h3 className="font-semibold">{game.title}</h3>
                 <p className="text-sm text-gray-300">
                   Platform: {game.platform}
@@ -106,8 +127,10 @@ function DisplayContent() {
                 </p>
               </div>
             </div>
+
+            {/* Color changes based on game.status */}
             <span
-              className={`font-semibold ${
+              className={`font-semibold text-center ${
                 game.status === "completed"
                   ? "text-green-400"
                   : game.status === "playing"

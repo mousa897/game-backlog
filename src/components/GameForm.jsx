@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGames } from "../context/GameContext";
 
-function GameForm() {
+function GameForm({ autoScrollRef }) {
   const [title, setTitle] = useState("");
   const [platform, setPlatform] = useState("");
   const [genre, setGenre] = useState("");
@@ -17,6 +17,7 @@ function GameForm() {
     searchQuery,
     setSearchQuery,
     searchResults,
+    games,
   } = useGames();
 
   const wrapperRef = useRef(null);
@@ -74,6 +75,15 @@ function GameForm() {
       };
       // add a new game
 
+      const alreadyExists = games.some(
+        (game) => game.title.toLowerCase() === title.toLowerCase(),
+      );
+
+      if (alreadyExists) {
+        alert("This game is already in your list!");
+        return;
+      }
+
       setGames((prevGames) => [...prevGames, newGame]);
     } //  add the new game to list
 
@@ -87,7 +97,7 @@ function GameForm() {
   }
 
   return (
-    <div className="w-full lg:w-1/3 mt-8">
+    <div ref={autoScrollRef} className="w-full lg:w-1/3 mt-8">
       <form
         className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4 border border-gray-700"
         onSubmit={handleSubmit}
