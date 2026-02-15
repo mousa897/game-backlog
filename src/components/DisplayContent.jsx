@@ -7,7 +7,6 @@ function DisplayContent() {
 
   // filter states
   const [statusFilter, setStatusFilter] = useState("all");
-  const [platformFilter, setPlatformFilter] = useState("all");
 
   // useGames from context
   const { games, setGames, editGame, setEditGame } = useGames();
@@ -18,12 +17,9 @@ function DisplayContent() {
       const statusMatch =
         statusFilter === "all" || game.status === statusFilter;
 
-      const platformMatch =
-        platformFilter === "all" || game.platform === platformFilter;
-
-      return statusMatch && platformMatch;
+      return statusMatch;
     });
-  }, [games, statusFilter, platformFilter]);
+  }, [games, statusFilter]);
 
   function handleDelete(id) {
     setGames(games.filter((game) => game.id !== id));
@@ -35,7 +31,7 @@ function DisplayContent() {
         <h2 className="text-2xl font-semibold text-center">Your Games</h2>
         <div className="flex gap-4 ">
           <label className="flex items-center text-sm text-gray-400">
-            Filters :
+            Filter :
           </label>
           <select
             className="p-2 rounded bg-gray-700 text-white"
@@ -48,18 +44,6 @@ function DisplayContent() {
             <option value="paused">Paused</option>
             <option value="dropped">Dropped</option>
             <option value="wishlist">Wishlist</option>
-          </select>
-          <select
-            className="p-2 rounded bg-gray-700 text-white"
-            value={platformFilter}
-            onChange={(e) => setPlatformFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="PC">PC</option>
-            <option value="Playstation">Playstation</option>
-            <option value="PS5">PS5</option>
-            <option value="Xbox">Xbox</option>
-            <option value="Switch">Switch</option>
           </select>
         </div>
 

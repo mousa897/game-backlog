@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function GameOfTheDay() {
   const [game, setGame] = useState(null);
@@ -34,10 +35,13 @@ function GameOfTheDay() {
   }, [RAWG_API_KEY]);
 
   return (
-    <div className="bg-gray-800 text-white rounded-xl shadow-md border border-gray-700 flex flex-col items-center justify-center w-fit p-5">
-      <h2 className="text-xl font-bold mb-2">Game Of The Day</h2>
+    <div className="bg-gray-800 text-white rounded-xl shadow-md border border-gray-700 ">
       {game ? (
-        <>
+        <Link
+          to={`/game/${game.id}`}
+          className="flex flex-col items-center justify-center w-fit gap-2 p-5"
+        >
+          <h2 className="text-xl font-bold mb-2">Game Of The Day</h2>
           <div className="flex justify-center mt-2">
             <img
               src={game.background_image}
@@ -50,7 +54,7 @@ function GameOfTheDay() {
             Released: {game.released || "Unknown"}
           </p>
           <p className="text-sm text-gray-400">Rating: ⭐ {game.rating}</p>
-        </>
+        </Link>
       ) : (
         <p>Loading...</p>
       )}
