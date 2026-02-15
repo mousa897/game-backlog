@@ -5,7 +5,7 @@ function Discover() {
 
   return (
     <div className="bg-gray-900 min-h-screen">
-      <div className="mx-40 py-10 flex flex-col gap-10">
+      <div className="px-4 sm:px-8 lg:px-20 xl:px-40 py-10 flex flex-col gap-10">
         <div className="flex flex-col gap-2">
           <h1 className="text-white text-3xl ">Discover</h1>
           <p className="text-white">

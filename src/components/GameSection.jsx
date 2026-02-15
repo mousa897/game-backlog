@@ -15,14 +15,14 @@ function GameSection({ title, endpoint }) {
     <section className="mb-10">
       <h2 className="text-2xl font-bold mb-4 text-white">{title}</h2>
 
-      <div className="flex gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {games.slice(0, 4).map((game) => (
-          <Link to={`/game/${game.id}`} key={game.id} className="w-full">
-            <div className="bg-gray-800 rounded hover:scale-105 transition w-full">
+          <Link to={`/game/${game.id}`} key={game.id} className="block">
+            <div className="bg-gray-800 rounded hover:scale-105 transition transform duration-300">
               <img
                 src={game.background_image}
                 alt={game.name}
-                className="h-40 w-full object-cover rounded-t"
+                className="h-48 sm:h-40 lg:h-44 w-full object-cover rounded-t"
               />
               <p className="p-2 font-semibold text-white">{game.name}</p>
             </div>

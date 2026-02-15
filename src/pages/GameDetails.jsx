@@ -43,12 +43,14 @@ function GameDetails() {
     fetchGame();
   }, [id, API_KEY]);
 
-  if (!game) return <p className="text-white p-10 mx-40 my-10">Loading...</p>;
+  if (!game)
+    return <p className="text-white p-6 sm:p-10 lg:px-40">Loading...</p>;
 
   return (
-    <main className="bg-gray-900 text-white mx-40">
-      <div className="flex gap-10 items-start justify-center my-20">
-        <div className="flex flex-col gap-5 items-center">
+    <main className="bg-gray-900 text-white min-h-screen px-6 sm:px-10 lg:px-40 py-10">
+      <div className="flex flex-col lg:flex-row gap-10 items-center lg:items-start">
+        {/* LEFT SIDE */}
+        <div className="flex flex-col gap-5 items-center w-full lg:w-1/3">
           <div className="w-80 flex items-center justify-center overflow-hidden rounded-xl">
             <img
               src={game.background_image || "/placeholder.png"}
