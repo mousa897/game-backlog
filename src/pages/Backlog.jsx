@@ -4,9 +4,9 @@ import GameOfTheDay from "../components/GameOfTheDay";
 
 function Backlog() {
   return (
-    <main className=" min-h-screen overflow-hidden px-40 bg-gray-900 flex flex-col justify-center items-center py-10">
+    <main className=" min-h-screen bg-gray-900 px-4 sm:px-8 lg:px-20 xl:px-40 py-10 flex flex-col items-center">
       <GameOfTheDay />
-      <div className="flex justify-center items-start gap-10 w-full">
+      <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-10 w-full mt-10">
         <GameForm />
         <DisplayContent />
       </div>

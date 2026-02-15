@@ -35,7 +35,7 @@ function GameOfTheDay() {
   }, [RAWG_API_KEY]);
 
   return (
-    <div className="bg-gray-800 text-white rounded-xl shadow-md border border-gray-700 ">
+    <div className="bg-gray-800 text-white rounded-xl shadow-md border  border-gray-700 ">
       {game ? (
         <Link
           to={`/game/${game.id}`}
@@ -49,7 +49,7 @@ function GameOfTheDay() {
               className="w-40 h-40 object-cover rounded"
             />
           </div>
-          <p className="text-lg font-semibold">{game.name}</p>
+          <p className="text-lg font-semibold text-center">{game.name}</p>
           <p className="text-sm text-gray-400">
             Released: {game.released || "Unknown"}
           </p>

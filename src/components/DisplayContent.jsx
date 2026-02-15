@@ -26,10 +26,12 @@ function DisplayContent() {
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg shadow-lg text-white mt-8 border border-gray-700 p-6 flex-7">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold text-center">Your Games</h2>
-        <div className="flex gap-4 ">
+    <div className="bg-gray-800 rounded-lg shadow-lg text-white mt-8 border border-gray-700 p-6 w-full lg:w-2/3">
+      <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between gap-4 mb-4">
+        <h2 className="text-2xl font-semibold text-center sm:text-left">
+          Your Games
+        </h2>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
           <label className="flex items-center text-sm text-gray-400">
             Filter :
           </label>
@@ -57,7 +59,7 @@ function DisplayContent() {
               setEditGame(null);
             }
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded w-[50%]  sm:w-auto"
         >
           {showEdit ? "Hide" : "Edit"}
         </button>

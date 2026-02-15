@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
-    <header className="bg-gray-800 shadow-md flex justify-between items-center py-6 px-40">
+    <header className="bg-gray-800 shadow-md flex flex-col sm:flex-row justify-between items-center py-6 px-4 sm:px-8 lg:px-20 xl:px-40 gap-4">
       <div className="flex gap-2 items-center">
         <h1 className="text-3xl">🎮</h1>
         <h1 className="text-3xl font-bold text-white">Gamers’ Hub</h1>

@@ -87,7 +87,7 @@ function GameForm() {
   }
 
   return (
-    <div className="flex justify-center mt-8 w-[35%] flex-3">
+    <div className="w-full lg:w-1/3 mt-8">
       <form
         className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4 border border-gray-700"
         onSubmit={handleSubmit}
