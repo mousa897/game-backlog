@@ -22,7 +22,7 @@ function GameDetails() {
       id: game.id,
       title: game.name,
       platform: game.platforms?.[0]?.platform?.name || "Unknown",
-      genre: game.genre?.[0]?.name || "Unknown",
+      genre: game.genres?.[0]?.name || "Unknown",
       status: "wishlist",
       notes: "",
       image: game.background_image,

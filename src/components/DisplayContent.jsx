@@ -116,7 +116,7 @@ function DisplayContent({ autoScrollRef }) {
               />
 
               {/* Game information text */}
-              <div className="text-center">
+              <div className="text-center sm:text-start">
                 <h3 className="font-semibold">{game.title}</h3>
                 <p className="text-sm text-gray-300">
                   Platform: {game.platform}
