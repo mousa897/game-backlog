@@ -4,12 +4,37 @@ import { Link } from "react-router-dom";
 function GameSection({ title, endpoint }) {
   const [games, setGames] = useState([]);
   const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=4${endpoint}`)
-      .then((res) => res.json())
-      .then((data) => setGames(data.results));
+    // Declare the async function inside useEffect
+    const fetchGames = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `https://api.rawg.io/api/games?key=${API_KEY}&page_size=4${endpoint}`,
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch game");
+        }
+        const data = await res.json();
+        setGames(data.results);
+      } catch (err) {
+        setError(true);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGames(); // call the async function
   }, [endpoint, API_KEY]);
+
+  if (loading)
+    return <p className="text-white p-6 sm:p-10 lg:px-40">Loading...</p>;
+
+  if (error) return <p>Something went wrong.</p>;
 
   return (
     <section className="mb-10">
