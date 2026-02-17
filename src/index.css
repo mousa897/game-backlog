@@ -1,4 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;1,14..32,300&display=swap");
+
 @import "tailwindcss";
+
+:root {
+  --font-inter: "Inter", sans-serif;
+}
+body {
+  font-family: var(--font-inter);
+}
 
 html,
 body,
