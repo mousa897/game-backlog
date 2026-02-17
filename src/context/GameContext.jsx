@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -77,17 +78,20 @@ export function GameProvider({ children }) {
     localStorage.setItem("games", JSON.stringify(games));
   }, [games]);
 
+  // values
+  const value = useMemo(() => {
+    return {
+      games,
+      setGames,
+      editGame,
+      setEditGame,
+      searchResults,
+      setSearchQuery,
+    };
+  }, [games, editGame, searchResults]);
+
   return (
-    <GameContext.Provider
-      value={{
-        games,
-        setGames,
-        editGame,
-        setEditGame,
-        searchResults,
-        setSearchQuery,
-      }}
-    >
+    <GameContext.Provider value={value}>
       {children}
       {/* everything inside <GameProvider> can use this state */}
     </GameContext.Provider>

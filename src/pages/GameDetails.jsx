@@ -6,6 +6,8 @@ function GameDetails() {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const { games, setGames } = useGames();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -33,18 +35,31 @@ function GameDetails() {
 
   useEffect(() => {
     async function fetchGame() {
-      const res = await fetch(
-        `https://api.rawg.io/api/games/${id}?key=${API_KEY}`,
-      );
-      const data = await res.json();
-      setGame(data);
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `https://api.rawg.io/api/games/${id}?key=${API_KEY}`,
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch game");
+        }
+        const data = await res.json();
+        setGame(data);
+      } catch (err) {
+        setError(true);
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchGame();
   }, [id, API_KEY]);
 
-  if (!game)
+  if (loading)
     return <p className="text-white p-6 sm:p-10 lg:px-40">Loading...</p>;
+
+  if (error) return <p>Something went wrong.</p>;
 
   return (
     <main className="bg-gray-900 text-white min-h-screen px-6 sm:px-10 lg:px-40 py-10">

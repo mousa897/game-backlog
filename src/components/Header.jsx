@@ -10,7 +10,6 @@ function Header() {
       <nav className="flex gap-4 text-gray-300">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/discover">Discover</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
       </nav>
     </header>
   );
