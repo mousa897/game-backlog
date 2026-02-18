@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 function Header() {
   return (
@@ -7,6 +8,7 @@ function Header() {
         <h1 className="text-3xl">🎮</h1>
         <h1 className="text-3xl font-bold text-white">Gamers’ Hub</h1>
       </div>
+      <SearchBar />
       <nav className="flex gap-4 text-gray-300">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/discover">Discover</NavLink>

@@ -34,6 +34,8 @@ export function GameProvider({ children }) {
   const [searchResults, setSearchResults] = useState([]);
   // Search Query
   const [searchQuery, setSearchQuery] = useState("");
+  // to edit a game
+  const [editGame, setEditGame] = useState(null);
 
   // api key
   const RAWG_API_KEY = import.meta.env.VITE_RAWG_API_KEY;
@@ -69,9 +71,6 @@ export function GameProvider({ children }) {
 
     return () => clearTimeout(timeout);
   }, [searchQuery, fetchGames]);
-
-  // to edit a game
-  const [editGame, setEditGame] = useState(null);
 
   // save locally
   useEffect(() => {
