@@ -223,7 +223,7 @@ function GameForm({ autoScrollRef }) {
         {/* Button */}
         <button
           type="submit"
-          className="mt-4 bg-blue-600 hover:bg-blue-700 transition-colors p-2 rounded font-semibold text-white"
+          className="mt-4 bg-blue-600 hover:bg-blue-700 transition-colors p-2 rounded font-semibold text-white cursor-pointer"
         >
           {editGame ? "Update Game" : "Add Game"}
         </button>

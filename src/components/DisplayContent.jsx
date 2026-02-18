@@ -64,7 +64,7 @@ function DisplayContent({ autoScrollRef }) {
               setEditGame(null);
             }
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded w-[50%]  sm:w-auto"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded w-[50%]  sm:w-auto cursor-pointer"
         >
           {showEdit ? "Hide" : "Edit"}
         </button>
@@ -78,14 +78,14 @@ function DisplayContent({ autoScrollRef }) {
             className="bg-gray-700 p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
             key={game.id}
           >
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full ">
               {showEdit && (
-                <div className="flex gap-2 sm:order-none order-first">
+                <div className="flex gap-2 sm:order-0 order-first">
                   <button
                     onClick={() => handleDelete(game.id)}
                     className="mr-4 flex items-center justify-center w-8 h-8 rounded-full 
              bg-red-600 hover:bg-red-700 text-white font-bold 
-             transition-colors"
+             transition-colors cursor-pointer"
                   >
                     X
                   </button>
@@ -101,7 +101,7 @@ function DisplayContent({ autoScrollRef }) {
                         });
                       }
                     }}
-                    className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded"
+                    className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded cursor-pointer"
                   >
                     Edit
                   </button>
