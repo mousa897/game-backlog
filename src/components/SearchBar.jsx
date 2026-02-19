@@ -62,7 +62,7 @@ function SearchBar() {
           setDropdown(true);
         }}
         placeholder="Search for a game..."
-        className="p-2 rounded bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white w-100"
+        className="p-2 rounded bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-white w-100  text-center sm:text-start"
       />
 
       {search.length > 0 && dropdown && (
