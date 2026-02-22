@@ -85,9 +85,10 @@ export function GameProvider({ children }) {
       editGame,
       setEditGame,
       searchResults,
+      searchQuery,
       setSearchQuery,
     };
-  }, [games, editGame, searchResults]);
+  }, [games, editGame, searchResults, searchQuery]);
 
   return (
     <GameContext.Provider value={value}>

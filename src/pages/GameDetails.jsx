@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGames } from "../context/GameContext";
+import DOMPurify from "dompurify";
 
 function GameDetails() {
   const { id } = useParams();
@@ -89,7 +90,11 @@ function GameDetails() {
 
           <div className="text-gray-300">
             {game.description ? (
-              <div dangerouslySetInnerHTML={{ __html: game.description }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(game.description),
+                }}
+              />
             ) : (
               <p>No description available.</p>
             )}
