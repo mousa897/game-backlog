@@ -1,16 +1,14 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+
 import { useGames } from "../context/GameContext";
 import DOMPurify from "dompurify";
+import { useRawg } from "../hooks/useRawg";
 
 function GameDetails() {
-  const { id } = useParams();
-  const [game, setGame] = useState(null);
   const { games, setGames } = useGames();
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
 
-  const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+  const { data: game, loading, error } = useRawg(`games/${id}`);
 
   function handleAddGame() {
     // checks if game is already in the list
@@ -34,33 +32,12 @@ function GameDetails() {
     alert("Game added to your backlog!");
   }
 
-  useEffect(() => {
-    async function fetchGame() {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `https://api.rawg.io/api/games/${id}?key=${API_KEY}`,
-        );
-        if (!res.ok) {
-          throw new Error("Failed to fetch game");
-        }
-        const data = await res.json();
-        setGame(data);
-      } catch (err) {
-        setError(true);
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchGame();
-  }, [id, API_KEY]);
-
   if (loading)
     return <p className="text-white p-6 sm:p-10 lg:px-40">Loading...</p>;
 
   if (error) return <p>Something went wrong.</p>;
+
+  if (!game) return null;
 
   return (
     <main className="bg-gray-900 text-white min-h-screen px-6 sm:px-10 lg:px-40 py-10">

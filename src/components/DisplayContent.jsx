@@ -1,15 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGames } from "../context/GameContext";
 
 function DisplayContent({ autoScrollRef }) {
   // show the edit button
   const [showEdit, setShowEdit] = useState(false);
-
   // filter states
   const [statusFilter, setStatusFilter] = useState("all");
-
   // useGames from context
   const { games, setGames, editGame, setEditGame } = useGames();
+
+  useEffect(() => {
+    if (!editGame) {
+      setShowEdit(false);
+    }
+  }, [editGame]);
 
   // filter games
   const filteredGames = useMemo(() => {
@@ -23,6 +27,11 @@ function DisplayContent({ autoScrollRef }) {
 
   function handleDelete(id) {
     setGames(games.filter((game) => game.id !== id));
+  }
+
+  function renderStars(rating) {
+    if (!rating) return "Unrated";
+    return "⭐".repeat(rating);
   }
 
   return (
@@ -122,6 +131,9 @@ function DisplayContent({ autoScrollRef }) {
                   Platform: {game.platform}
                 </p>
                 <p className="text-sm text-gray-400">Genre: {game.genre}</p>
+                <p className="text-sm text-gray-300 mt-1">
+                  Rating: {renderStars(game.rating)}
+                </p>
                 <p className="text-sm text-gray-200 italic mt-1">
                   Notes: {game.notes}
                 </p>

@@ -6,29 +6,17 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 // Create Context
 
 const GameContext = createContext();
 
-const initialGames = [
-  {
-    id: 2233,
-    title: "Elden Ring",
-    platform: "PC",
-    genre: "Action RPG",
-    status: "playing",
-    notes: "its a hard game",
-    image: "https://media.rawg.io/media/games/xyz/elden_ring.jpg",
-  },
-];
+const initialGames = [];
 
 export function GameProvider({ children }) {
   // game list
-  const [games, setGames] = useState(() => {
-    const savedGames = localStorage.getItem("games");
-    return savedGames ? JSON.parse(savedGames) : initialGames;
-  });
+  const [games, setGames] = useLocalStorage("games", initialGames);
 
   // Search Game Results
   const [searchResults, setSearchResults] = useState([]);
@@ -72,11 +60,6 @@ export function GameProvider({ children }) {
     return () => clearTimeout(timeout);
   }, [searchQuery, fetchGames]);
 
-  // save locally
-  useEffect(() => {
-    localStorage.setItem("games", JSON.stringify(games));
-  }, [games]);
-
   // values
   const value = useMemo(() => {
     return {
@@ -88,7 +71,7 @@ export function GameProvider({ children }) {
       searchQuery,
       setSearchQuery,
     };
-  }, [games, editGame, searchResults, searchQuery]);
+  }, [games, setGames, editGame, searchResults, searchQuery]);
 
   return (
     <GameContext.Provider value={value}>

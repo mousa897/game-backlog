@@ -9,6 +9,7 @@ function GameForm({ autoScrollRef }) {
   const [notes, setNotes] = useState("");
   const [image, setImage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [rating, setRating] = useState("");
 
   const {
     setGames,
@@ -45,6 +46,7 @@ function GameForm({ autoScrollRef }) {
       setStatus(editGame.status);
       setNotes(editGame.notes);
       setImage(editGame.image || "");
+      setRating(editGame.rating || "");
     }
   }, [editGame]);
 
@@ -58,7 +60,15 @@ function GameForm({ autoScrollRef }) {
       setGames((games) =>
         games.map((game) =>
           game.id === editGame.id
-            ? { ...game, title, platform, genre, status, notes } // update this game
+            ? {
+                ...game,
+                title,
+                platform,
+                genre,
+                status,
+                notes,
+                rating: rating ? Number(rating) : null,
+              } // update this game
             : game,
         ),
       );
@@ -71,6 +81,7 @@ function GameForm({ autoScrollRef }) {
         genre,
         status,
         notes,
+        rating: rating ? Number(rating) : null,
         image,
       };
       // add a new game
@@ -94,10 +105,14 @@ function GameForm({ autoScrollRef }) {
     setStatus("wishlist");
     setNotes("");
     setImage("");
+    setRating("");
   }
 
   return (
-    <div ref={autoScrollRef} className="w-full lg:w-1/3 mt-8">
+    <div
+      ref={autoScrollRef}
+      className="flex justify-center w-full lg:w-1/3 mt-8"
+    >
       <form
         className="bg-gray-800 text-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4 border border-gray-700"
         onSubmit={handleSubmit}
@@ -168,17 +183,13 @@ function GameForm({ autoScrollRef }) {
         {/* Platform */}
         <div className="flex flex-col">
           <label className="mb-1 text-gray-300">Platform</label>
-          <select
-            className="p-2 rounded bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <input
+            type="text"
+            placeholder="PC / PS5 / Xbox / Switch..."
+            className="p-2 rounded bg-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={platform}
             onChange={(e) => setPlatform(e.target.value)}
-          >
-            <option value="">Select platform</option>
-            <option value="PC">PC</option>
-            <option value="PS5">PlayStation</option>
-            <option value="Xbox">Xbox</option>
-            <option value="Switch">Switch</option>
-          </select>
+          />
         </div>
 
         {/* Genre */}
@@ -206,6 +217,23 @@ function GameForm({ autoScrollRef }) {
             <option value="completed">Completed</option>
             <option value="paused">Paused</option>
             <option value="dropped">Dropped</option>
+          </select>
+        </div>
+
+        {/* Rating */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-gray-300">Rating</label>
+          <select
+            className="p-2 rounded bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+          >
+            <option value="">Unrated</option>
+            <option value="1">1 ⭐</option>
+            <option value="2">2 ⭐</option>
+            <option value="3">3 ⭐</option>
+            <option value="4">4 ⭐</option>
+            <option value="5">5 ⭐</option>
           </select>
         </div>
 
