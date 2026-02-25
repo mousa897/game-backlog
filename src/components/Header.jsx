@@ -33,7 +33,7 @@ function Header() {
               }`
             }
           >
-            Home
+            Backlog
           </NavLink>
           <NavLink
             to="/discover"

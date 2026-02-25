@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-
 import { useGames } from "../context/GameContext";
 import DOMPurify from "dompurify";
 import { useRawg } from "../hooks/useRawg";
@@ -7,18 +6,14 @@ import { useRawg } from "../hooks/useRawg";
 function GameDetails() {
   const { games, setGames } = useGames();
   const { id } = useParams();
-
   const { data: game, loading, error } = useRawg(`games/${id}`);
 
   function handleAddGame() {
-    // checks if game is already in the list
     const alreadyAdded = games.some((g) => g.id === game.id);
     if (alreadyAdded) {
       alert("Game is already in your backlog!");
       return;
     }
-
-    // adds the game to the list
     const newGame = {
       id: game.id,
       title: game.name,
@@ -33,39 +28,84 @@ function GameDetails() {
   }
 
   if (loading)
-    return <p className="text-white p-6 sm:p-10 lg:px-40">Loading...</p>;
+    return (
+      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
+        <p className="text-gray-400 text-lg animate-pulse">Loading...</p>
+      </div>
+    );
 
-  if (error) return <p>Something went wrong.</p>;
+  if (error)
+    return (
+      <div className="bg-gray-900 min-h-screen flex items-center justify-center">
+        <p className="text-red-400 text-lg">Something went wrong.</p>
+      </div>
+    );
 
   if (!game) return null;
 
   return (
     <main className="bg-gray-900 text-white min-h-screen px-6 sm:px-10 lg:px-40 py-10">
-      <div className="flex flex-col lg:flex-row gap-10 items-center lg:items-start">
-        {/* LEFT SIDE */}
-        <div className="flex flex-col gap-5 items-center w-full lg:w-1/3">
-          <div className="w-80 flex items-center justify-center overflow-hidden rounded-xl">
+      {/* Hero banner image */}
+      <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-10 shadow-xl">
+        <img
+          src={game.background_image || "/placeholder.png"}
+          alt={game.name}
+          className="w-full h-full object-cover"
+        />
+        {/* dark gradient overlay so text is readable if we ever put text on it */}
+        <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40 to-transparent" />
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-10 items-start">
+        {/* LEFT SIDE - thumbnail + button */}
+        <div className="flex flex-col gap-5 items-center w-full lg:w-1/3 lg:sticky lg:top-10">
+          <div className="w-full rounded-xl overflow-hidden shadow-lg border border-gray-700/50">
             <img
               src={game.background_image || "/placeholder.png"}
               alt={game.name}
-              className="min-h-full min-w-full object-contain"
+              className="w-full object-cover"
             />
           </div>
+
+          {/* meta info pills */}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {game.genres?.map((g) => (
+              <span
+                key={g.id}
+                className="text-xs bg-gray-700 text-gray-300 px-3 py-1 rounded-full"
+              >
+                {g.name}
+              </span>
+            ))}
+          </div>
+
           <button
             onClick={handleAddGame}
-            className=" cursor-pointer mt-4 bg-blue-600 hover:bg-blue-700 transition-colors p-2 rounded font-semibold text-white w-[50%]"
+            className="cursor-pointer w-full bg-blue-600 hover:bg-blue-500 active:scale-95 transition-all duration-200 py-3 rounded-xl font-semibold text-white shadow-md shadow-blue-900/40"
           >
-            Add Game To Wishlist
+            + Add to Wishlist
           </button>
         </div>
-        <div className="flex flex-col gap-4 items-start justify-center">
-          <h1 className="text-4xl font-bold">{game.name}</h1>
 
-          <p className="text-gray-400">
-            ⭐ {game.rating} | Released: {game.released}
-          </p>
+        {/* RIGHT SIDE - details */}
+        <div className="flex flex-col gap-6 flex-1">
+          <div>
+            <h1 className="text-4xl font-extrabold tracking-tight">
+              {game.name}
+            </h1>
+            <p className="text-gray-400 mt-2 text-sm">
+              ⭐ <span className="text-white font-medium">{game.rating}</span>
+              <span className="mx-2 text-gray-600">·</span>
+              Released:{" "}
+              <span className="text-white font-medium">{game.released}</span>
+            </p>
+          </div>
 
-          <div className="text-gray-300">
+          {/* divider */}
+          <div className="h-px bg-gray-700/60" />
+
+          {/* description */}
+          <div className="text-gray-300 leading-relaxed text-sm sm:text-base">
             {game.description ? (
               <div
                 dangerouslySetInnerHTML={{
@@ -73,7 +113,7 @@ function GameDetails() {
                 }}
               />
             ) : (
-              <p>No description available.</p>
+              <p className="text-gray-500 italic">No description available.</p>
             )}
           </div>
         </div>

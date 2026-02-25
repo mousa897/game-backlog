@@ -3,28 +3,27 @@ import { useGames } from "../context/GameContext";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 
+const STATUS_COLORS = {
+  completed: "bg-green-500/20 text-green-400 border-green-500/30",
+  playing: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  dropped: "bg-red-500/20 text-red-400 border-red-500/30",
+  paused: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  wishlist: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+};
+
 function DisplayContent({ autoScrollRef }) {
-  // show the edit button
   const [showEdit, setShowEdit] = useState(false);
-  // filter states
   const [statusFilter, setStatusFilter] = useState("all");
-  // useGames from context
   const { games, setGames, editGame, setEditGame } = useGames();
 
   useEffect(() => {
-    if (!editGame) {
-      setShowEdit(false);
-    }
+    if (!editGame) setShowEdit(false);
   }, [editGame]);
 
-  // filter games
   const filteredGames = useMemo(() => {
-    return games.filter((game) => {
-      const statusMatch =
-        statusFilter === "all" || game.status === statusFilter;
-
-      return statusMatch;
-    });
+    return games.filter(
+      (game) => statusFilter === "all" || game.status === statusFilter,
+    );
   }, [games, statusFilter]);
 
   function handleDelete(id) {
@@ -32,27 +31,27 @@ function DisplayContent({ autoScrollRef }) {
   }
 
   function renderStars(rating) {
-    if (!rating) return "Unrated";
+    if (!rating)
+      return <span className="text-gray-500 italic text-xs">Unrated</span>;
     return "⭐".repeat(rating);
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg shadow-lg text-white mt-8 border border-gray-700 p-6 w-full lg:w-2/3">
-      {/* HEADER SECTION*/}
-      <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-between gap-4 mb-4">
-        <h2 className="text-2xl font-semibold text-center sm:text-left">
-          Your Games
-        </h2>
+    <div className="bg-gray-800 rounded-2xl shadow-lg text-white mt-8 border border-gray-700/50 p-6 w-full lg:w-2/3">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-6 bg-blue-500 rounded-full" />
+          <h2 className="text-xl font-bold">Your Games</h2>
+          <span className="ml-1 text-xs bg-gray-700 text-gray-400 px-2 py-0.5 rounded-full">
+            {filteredGames.length}
+          </span>
+        </div>
 
-        {/* filter */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
-          <label className="flex items-center text-sm text-gray-400">
-            Filter :
-          </label>
-
-          {/* Dropdown that updates statusFilter state */}
+        <div className="flex flex-wrap gap-3 items-center">
+          {/* Filter */}
           <select
-            className="p-2 rounded bg-gray-700 text-white"
+            className="p-2 rounded-lg bg-gray-700/60 border border-gray-600/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -63,100 +62,93 @@ function DisplayContent({ autoScrollRef }) {
             <option value="dropped">Dropped</option>
             <option value="wishlist">Wishlist</option>
           </select>
+
+          {/* Edit toggle */}
+          <button
+            onClick={() => {
+              setShowEdit(!showEdit);
+              if (showEdit && editGame) setEditGame(null);
+            }}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer ${
+              showEdit
+                ? "bg-gray-600 hover:bg-gray-500 text-white"
+                : "bg-blue-600 hover:bg-blue-500 text-white"
+            }`}
+          >
+            {showEdit ? "Done" : "Edit"}
+          </button>
         </div>
-
-        {/* edit mode toggle */}
-        <button
-          onClick={() => {
-            setShowEdit(!showEdit);
-
-            // If exiting edit mode, clear selected editGame
-            if (showEdit && editGame) {
-              setEditGame(null);
-            }
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded w-[50%]  sm:w-auto cursor-pointer"
-        >
-          {showEdit ? "Hide" : "Edit"}
-        </button>
       </div>
 
-      {/* game list */}
+      {/* Empty state */}
+      {filteredGames.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+          <p className="text-4xl mb-3">🎮</p>
+          <p className="text-sm">No games here yet. Add one!</p>
+        </div>
+      )}
+
+      {/* Game list */}
       <ul className="space-y-3">
         <AnimatePresence>
           {filteredGames.map((game) => (
             <motion.li
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.3 }}
-              // Each individual game card
-              className="bg-gray-700 p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
               key={game.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.25 }}
+              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors duration-200"
             >
-              <div className="flex flex-col sm:flex-row items-center gap-4 w-full ">
-                {showEdit && (
-                  <div className="flex gap-2 sm:order-0 order-first">
-                    <button
-                      onClick={() => handleDelete(game.id)}
-                      className="mr-4 flex items-center justify-center w-8 h-8 rounded-full 
-             bg-red-600 hover:bg-red-700 text-white font-bold 
-             transition-colors cursor-pointer"
-                    >
-                      X
-                    </button>
-
-                    {/* Edit button sets selected game into edit mode */}
-                    <button
-                      onClick={() => {
-                        setEditGame(game); // scroll back to form to edit
-                        if (autoScrollRef?.current) {
-                          autoScrollRef.current.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          });
-                        }
-                      }}
-                      className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded cursor-pointer"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                )}
-
-                {/* Game thumbnail image */}
-                <img
-                  src={game.image || "https://via.placeholder.com/80"}
-                  alt={game.title}
-                  className="w-20 h-20 object-cover rounded mr-4"
-                />
-
-                {/* Game information text */}
-                <div className="text-center sm:text-start">
-                  <h3 className="font-semibold">{game.title}</h3>
-                  <p className="text-sm text-gray-300">
-                    Platform: {game.platform}
-                  </p>
-                  <p className="text-sm text-gray-400">Genre: {game.genre}</p>
-                  <p className="text-sm text-gray-300 mt-1">
-                    Rating: {renderStars(game.rating)}
-                  </p>
-                  <p className="text-sm text-gray-200 italic mt-1">
-                    Notes: {game.notes}
-                  </p>
+              {/* Edit controls */}
+              {showEdit && (
+                <div className="flex gap-2 shrink-0">
+                  <button
+                    onClick={() => handleDelete(game.id)}
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditGame(game);
+                      autoScrollRef?.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }}
+                    className="px-3 py-1 bg-yellow-500 hover:bg-yellow-400 text-white text-xs font-medium rounded-full transition-colors cursor-pointer"
+                  >
+                    Edit
+                  </button>
                 </div>
+              )}
+
+              {/* Thumbnail */}
+              <img
+                src={game.image || "https://via.placeholder.com/80"}
+                alt={game.title}
+                className="w-16 h-16 object-cover rounded-lg shrink-0"
+              />
+
+              {/* Info */}
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="font-semibold text-white">{game.title}</h3>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  {game.platform} · {game.genre}
+                </p>
+                <p className="text-xs mt-1">{renderStars(game.rating)}</p>
+                {game.notes && (
+                  <p className="text-xs text-gray-400 italic mt-1 line-clamp-1">
+                    {game.notes}
+                  </p>
+                )}
               </div>
 
-              {/* Color changes based on game.status */}
+              {/* Status badge */}
               <span
-                className={`font-semibold text-center ${
-                  game.status === "completed"
-                    ? "text-green-400"
-                    : game.status === "playing"
-                      ? "text-yellow-400"
-                      : game.status === "dropped"
-                        ? "text-red-400"
-                        : "text-blue-400"
+                className={`shrink-0 text-xs font-semibold px-3 py-1 rounded-full border capitalize ${
+                  STATUS_COLORS[game.status] || "bg-gray-600 text-gray-300"
                 }`}
               >
                 {game.status}
