@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Header from "./components/Header";
 import Backlog from "./pages/Backlog";
 import Discover from "./pages/Discover"; // if you add it later
+import GameDetails from "./pages/GameDetails";
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
               </motion.div>
             }
           />
+          <Route path="/game/:id" element={<GameDetails />} />
         </Routes>
       </AnimatePresence>
     </>
