@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useRawg } from "../hooks/useRawg";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 function GameSection({ title, endpoint }) {
   const { data, loading, error } = useRawg(`games?page_size=4${endpoint}`);
@@ -19,10 +21,13 @@ function GameSection({ title, endpoint }) {
         {games.map((game) => (
           <Link to={`/game/${game.id}`} key={game.id} className="block">
             <div className="bg-gray-800 rounded hover:scale-105 transition transform duration-300">
-              <img
+              <motion.img
                 src={game.background_image}
                 alt={game.name}
                 className="h-48 sm:h-40 lg:h-44 w-full object-cover rounded-t"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
               />
               <p className="p-2 font-semibold text-white">{game.name}</p>
             </div>

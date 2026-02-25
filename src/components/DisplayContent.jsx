@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useGames } from "../context/GameContext";
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
 
 function DisplayContent({ autoScrollRef }) {
   // show the edit button
@@ -81,81 +83,87 @@ function DisplayContent({ autoScrollRef }) {
 
       {/* game list */}
       <ul className="space-y-3">
-        {filteredGames.map((game) => (
-          <li
-            // Each individual game card
-            className="bg-gray-700 p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
-            key={game.id}
-          >
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full ">
-              {showEdit && (
-                <div className="flex gap-2 sm:order-0 order-first">
-                  <button
-                    onClick={() => handleDelete(game.id)}
-                    className="mr-4 flex items-center justify-center w-8 h-8 rounded-full 
+        <AnimatePresence>
+          {filteredGames.map((game) => (
+            <motion.li
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              // Each individual game card
+              className="bg-gray-700 p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
+              key={game.id}
+            >
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full ">
+                {showEdit && (
+                  <div className="flex gap-2 sm:order-0 order-first">
+                    <button
+                      onClick={() => handleDelete(game.id)}
+                      className="mr-4 flex items-center justify-center w-8 h-8 rounded-full 
              bg-red-600 hover:bg-red-700 text-white font-bold 
              transition-colors cursor-pointer"
-                  >
-                    X
-                  </button>
+                    >
+                      X
+                    </button>
 
-                  {/* Edit button sets selected game into edit mode */}
-                  <button
-                    onClick={() => {
-                      setEditGame(game); // scroll back to form to edit
-                      if (autoScrollRef?.current) {
-                        autoScrollRef.current.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                      }
-                    }}
-                    className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded cursor-pointer"
-                  >
-                    Edit
-                  </button>
+                    {/* Edit button sets selected game into edit mode */}
+                    <button
+                      onClick={() => {
+                        setEditGame(game); // scroll back to form to edit
+                        if (autoScrollRef?.current) {
+                          autoScrollRef.current.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                        }
+                      }}
+                      className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded cursor-pointer"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                )}
+
+                {/* Game thumbnail image */}
+                <img
+                  src={game.image || "https://via.placeholder.com/80"}
+                  alt={game.title}
+                  className="w-20 h-20 object-cover rounded mr-4"
+                />
+
+                {/* Game information text */}
+                <div className="text-center sm:text-start">
+                  <h3 className="font-semibold">{game.title}</h3>
+                  <p className="text-sm text-gray-300">
+                    Platform: {game.platform}
+                  </p>
+                  <p className="text-sm text-gray-400">Genre: {game.genre}</p>
+                  <p className="text-sm text-gray-300 mt-1">
+                    Rating: {renderStars(game.rating)}
+                  </p>
+                  <p className="text-sm text-gray-200 italic mt-1">
+                    Notes: {game.notes}
+                  </p>
                 </div>
-              )}
-
-              {/* Game thumbnail image */}
-              <img
-                src={game.image || "https://via.placeholder.com/80"}
-                alt={game.title}
-                className="w-20 h-20 object-cover rounded mr-4"
-              />
-
-              {/* Game information text */}
-              <div className="text-center sm:text-start">
-                <h3 className="font-semibold">{game.title}</h3>
-                <p className="text-sm text-gray-300">
-                  Platform: {game.platform}
-                </p>
-                <p className="text-sm text-gray-400">Genre: {game.genre}</p>
-                <p className="text-sm text-gray-300 mt-1">
-                  Rating: {renderStars(game.rating)}
-                </p>
-                <p className="text-sm text-gray-200 italic mt-1">
-                  Notes: {game.notes}
-                </p>
               </div>
-            </div>
 
-            {/* Color changes based on game.status */}
-            <span
-              className={`font-semibold text-center ${
-                game.status === "completed"
-                  ? "text-green-400"
-                  : game.status === "playing"
-                    ? "text-yellow-400"
-                    : game.status === "dropped"
-                      ? "text-red-400"
-                      : "text-blue-400"
-              }`}
-            >
-              {game.status}
-            </span>
-          </li>
-        ))}
+              {/* Color changes based on game.status */}
+              <span
+                className={`font-semibold text-center ${
+                  game.status === "completed"
+                    ? "text-green-400"
+                    : game.status === "playing"
+                      ? "text-yellow-400"
+                      : game.status === "dropped"
+                        ? "text-red-400"
+                        : "text-blue-400"
+                }`}
+              >
+                {game.status}
+              </span>
+            </motion.li>
+          ))}
+        </AnimatePresence>
       </ul>
     </div>
   );
