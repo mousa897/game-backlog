@@ -6,13 +6,13 @@ export function useRawg(endpoint) {
   const [error, setError] = useState(false);
 
   const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
-  const seperator = endpoint.includes("?") ? "&" : "?";
+  const separator = endpoint.includes("?") ? "&" : "?";
 
   useEffect(() => {
     async function fetchData() {
       try {
         const res = await fetch(
-          `https://api.rawg.io/api/${endpoint}${seperator}&key=${API_KEY}`,
+          `https://api.rawg.io/api/${endpoint}${separator}key=${API_KEY}`,
         );
         if (!res.ok) throw new Error("failed to fetch");
         const json = await res.json();
@@ -25,7 +25,7 @@ export function useRawg(endpoint) {
       }
     }
     fetchData();
-  }, [API_KEY, endpoint, seperator]);
+  }, [API_KEY, endpoint, separator]);
 
   return { data, loading, error };
 }
