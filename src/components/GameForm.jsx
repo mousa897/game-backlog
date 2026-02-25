@@ -1,4 +1,3 @@
-// GameForm.jsx
 import { useEffect, useRef, useState } from "react";
 import { useGames } from "../context/GameContext";
 
@@ -240,6 +239,7 @@ function GameForm({ autoScrollRef }) {
             className={`${inputClass} resize-none h-24`}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
+            maxLength={150}
           />
         </div>
 
