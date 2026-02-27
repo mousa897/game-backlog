@@ -2,6 +2,7 @@ import { useRef } from "react";
 import DisplayContent from "../components/DisplayContent";
 import GameForm from "../components/GameForm";
 import GameOfTheDay from "../components/GameOfTheDay";
+import BacklogStats from "../components/BacklogStats";
 
 function Backlog() {
   const autoScrollRef = useRef(null);
@@ -19,6 +20,10 @@ function Backlog() {
       </div>
 
       <GameOfTheDay />
+
+      <div className="w-full mt-10">
+        <BacklogStats />
+      </div>
 
       <div className="flex flex-col lg:flex-row justify-center items-center lg:items-start gap-10 w-full mt-10">
         <GameForm autoScrollRef={autoScrollRef} />

@@ -15,7 +15,8 @@ const STATUS_COLORS = {
 function DisplayContent({ autoScrollRef }) {
   const [showEdit, setShowEdit] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
-  const [deleteTarget, setDeleteTarget] = useState(null); // tracks which game is being deleted
+  const [sortBy, setSortBy] = useState("default");
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const { games, setGames, editGame, setEditGame } = useGames();
 
   useEffect(() => {
@@ -23,10 +24,23 @@ function DisplayContent({ autoScrollRef }) {
   }, [editGame]);
 
   const filteredGames = useMemo(() => {
-    return games.filter(
+    const filtered = games.filter(
       (game) => statusFilter === "all" || game.status === statusFilter,
     );
-  }, [games, statusFilter]);
+
+    const sorted = [...filtered];
+
+    if (sortBy === "title-asc") {
+      sorted.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === "title-desc") {
+      sorted.sort((a, b) => b.title.localeCompare(a.title));
+    } else if (sortBy === "rating-high") {
+      sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else if (sortBy === "rating-low") {
+      sorted.sort((a, b) => (a.rating || 0) - (b.rating || 0));
+    }
+    return sorted;
+  }, [games, statusFilter, sortBy]);
 
   function handleDelete() {
     setGames(games.filter((game) => game.id !== deleteTarget.id));
@@ -93,28 +107,16 @@ function DisplayContent({ autoScrollRef }) {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-        <div className="flex items-center gap-2">
-          <div className="w-1 h-6 bg-blue-500 rounded-full" />
-          <h2 className="text-xl font-bold">Your Games</h2>
-          <span className="ml-1 text-xs bg-gray-700 text-gray-400 px-2 py-0.5 rounded-full">
-            {filteredGames.length}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap gap-3 items-center">
-          <select
-            className="p-2 rounded-lg bg-gray-700/60 border border-gray-600/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="completed">Completed</option>
-            <option value="playing">Playing</option>
-            <option value="paused">Paused</option>
-            <option value="dropped">Dropped</option>
-            <option value="wishlist">Wishlist</option>
-          </select>
+      <div className="flex flex-col gap-4 mb-6">
+        {/* Top row - title + edit button */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-1 h-6 bg-blue-500 rounded-full" />
+            <h2 className="text-xl font-bold">Your Games</h2>
+            <span className="ml-1 text-xs bg-gray-700 text-gray-400 px-2 py-0.5 rounded-full">
+              {filteredGames.length}
+            </span>
+          </div>
 
           <button
             onClick={() => {
@@ -129,6 +131,46 @@ function DisplayContent({ autoScrollRef }) {
           >
             {showEdit ? "Done" : "Edit"}
           </button>
+        </div>
+
+        {/* Bottom row - filter + sort */}
+        <div className="flex flex-wrap gap-4">
+          {/* Filter */}
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-gray-500 font-medium uppercase tracking-wider pl-1">
+              Filter
+            </label>
+            <select
+              className="p-2 rounded-lg bg-gray-700/60 border border-gray-600/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="completed">Completed</option>
+              <option value="playing">Playing</option>
+              <option value="paused">Paused</option>
+              <option value="dropped">Dropped</option>
+              <option value="wishlist">Wishlist</option>
+            </select>
+          </div>
+
+          {/* Sort */}
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-gray-500 font-medium uppercase tracking-wider pl-1">
+              Sort
+            </label>
+            <select
+              className="p-2 rounded-lg bg-gray-700/60 border border-gray-600/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="default">Default</option>
+              <option value="title-asc">Title A → Z</option>
+              <option value="title-desc">Title Z → A</option>
+              <option value="rating-high">Rating: High → Low</option>
+              <option value="rating-low">Rating: Low → High</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -150,7 +192,7 @@ function DisplayContent({ autoScrollRef }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 0.25 }}
-              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors duration-200"
+              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4 transition-colors duration-200"
             >
               {showEdit && (
                 <div className="flex gap-2 shrink-0">
