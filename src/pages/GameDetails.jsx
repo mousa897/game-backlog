@@ -46,7 +46,7 @@ function GameDetails() {
   return (
     <main className="bg-gray-900 text-white min-h-screen px-6 sm:px-10 lg:px-40 py-10">
       {/* Hero banner image */}
-      <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-10 shadow-xl">
+      <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-10 shadow-xl hidden sm:block">
         <img
           src={game.background_image || "/placeholder.png"}
           alt={game.name}

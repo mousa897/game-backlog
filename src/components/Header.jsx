@@ -10,7 +10,7 @@ function Header() {
       <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-4 sm:px-8 lg:px-20 xl:px-40 gap-4">
         {/* Logo */}
         <div className="flex gap-3 items-center group">
-          <span className="text-3xl transition-transform duration-300 group-hover:rotate-12">
+          <span className="text-3xl transition-transform duration-300 group-hover:rotate-12 hidden sm:block">
             🎮
           </span>
           <h1 className="text-2xl font-extrabold tracking-tight text-white">

@@ -48,7 +48,7 @@ function DisplayContent({ autoScrollRef }) {
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-3 items-center">
+        <div className="flex flex-wrap gap-3 items-center justify-between">
           {/* Filter */}
           <select
             className="p-2 rounded-lg bg-gray-700/60 border border-gray-600/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
@@ -98,7 +98,7 @@ function DisplayContent({ autoScrollRef }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 0.25 }}
-              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors duration-200"
+              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4 transition-colors duration-200"
             >
               {/* Edit controls */}
               {showEdit && (
