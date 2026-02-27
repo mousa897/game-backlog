@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useGames } from "../context/GameContext";
+import toast from "react-hot-toast";
 
 function GameForm({ autoScrollRef }) {
   const [title, setTitle] = useState("");
@@ -65,12 +66,13 @@ function GameForm({ autoScrollRef }) {
         ),
       );
       setEditGame(null);
+      return toast.success("Game updated successfully!");
     } else {
       const alreadyExists = games.some(
         (game) => game.title.toLowerCase() === title.toLowerCase(),
       );
       if (alreadyExists) {
-        alert("This game is already in your list!");
+        toast.error("This game is already in your list!");
         return;
       }
       setGames((prev) => [
@@ -87,6 +89,8 @@ function GameForm({ autoScrollRef }) {
         },
       ]);
     }
+
+    toast.success("Game added to your backlog!");
 
     setTitle("");
     setPlatform("");

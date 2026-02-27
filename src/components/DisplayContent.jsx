@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useGames } from "../context/GameContext";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 const STATUS_COLORS = {
   completed: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -14,6 +15,7 @@ const STATUS_COLORS = {
 function DisplayContent({ autoScrollRef }) {
   const [showEdit, setShowEdit] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
+  const [deleteTarget, setDeleteTarget] = useState(null); // tracks which game is being deleted
   const { games, setGames, editGame, setEditGame } = useGames();
 
   useEffect(() => {
@@ -26,8 +28,11 @@ function DisplayContent({ autoScrollRef }) {
     );
   }, [games, statusFilter]);
 
-  function handleDelete(id) {
-    setGames(games.filter((game) => game.id !== id));
+  function handleDelete() {
+    setGames(games.filter((game) => game.id !== deleteTarget.id));
+    setDeleteTarget(null);
+    setShowEdit(false);
+    toast.success("Game removed.");
   }
 
   function renderStars(rating) {
@@ -38,6 +43,55 @@ function DisplayContent({ autoScrollRef }) {
 
   return (
     <div className="bg-gray-800 rounded-2xl shadow-lg text-white mt-8 border border-gray-700/50 p-6 w-full lg:w-2/3">
+      {/* CONFIRM DELETE MODAL */}
+      <AnimatePresence>
+        {deleteTarget && (
+          <motion.div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setDeleteTarget(null)}
+          >
+            {/* Modal box — stop clicks from bubbling up to the backdrop */}
+            <motion.div
+              className="bg-gray-800 border border-gray-700/50 rounded-2xl p-6 shadow-2xl w-[90%] max-w-sm flex flex-col gap-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex flex-col gap-1">
+                <h3 className="text-lg font-bold text-white">Remove game?</h3>
+                <p className="text-sm text-gray-400">
+                  Are you sure you want to remove{" "}
+                  <span className="text-white font-medium">
+                    {deleteTarget.title}
+                  </span>{" "}
+                  from your backlog?
+                </p>
+              </div>
+
+              <div className="flex gap-3 justify-end mt-2">
+                <button
+                  onClick={() => setDeleteTarget(null)}
+                  className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-sm font-medium text-white transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-sm font-medium text-white transition-colors cursor-pointer"
+                >
+                  Remove
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <div className="flex items-center gap-2">
@@ -48,8 +102,7 @@ function DisplayContent({ autoScrollRef }) {
           </span>
         </div>
 
-        <div className="flex flex-wrap gap-3 items-center justify-between">
-          {/* Filter */}
+        <div className="flex flex-wrap gap-3 items-center">
           <select
             className="p-2 rounded-lg bg-gray-700/60 border border-gray-600/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             value={statusFilter}
@@ -63,7 +116,6 @@ function DisplayContent({ autoScrollRef }) {
             <option value="wishlist">Wishlist</option>
           </select>
 
-          {/* Edit toggle */}
           <button
             onClick={() => {
               setShowEdit(!showEdit);
@@ -98,13 +150,12 @@ function DisplayContent({ autoScrollRef }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -40 }}
               transition={{ duration: 0.25 }}
-              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-4 transition-colors duration-200"
+              className="bg-gray-700/50 border border-gray-600/30 hover:border-gray-500/50 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors duration-200"
             >
-              {/* Edit controls */}
               {showEdit && (
                 <div className="flex gap-2 shrink-0">
                   <button
-                    onClick={() => handleDelete(game.id)}
+                    onClick={() => setDeleteTarget(game)} // store the game, opens modal
                     className="w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors cursor-pointer"
                   >
                     ✕
@@ -124,14 +175,12 @@ function DisplayContent({ autoScrollRef }) {
                 </div>
               )}
 
-              {/* Thumbnail */}
               <img
                 src={game.image || "https://via.placeholder.com/80"}
                 alt={game.title}
                 className="w-16 h-16 object-cover rounded-lg shrink-0"
               />
 
-              {/* Info */}
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="font-semibold text-white">{game.title}</h3>
                 <p className="text-xs text-gray-400 mt-0.5">
@@ -139,17 +188,14 @@ function DisplayContent({ autoScrollRef }) {
                 </p>
                 <p className="text-xs mt-1">{renderStars(game.rating)}</p>
                 {game.notes && (
-                  <p className="text-xs text-gray-400 italic mt-1 line-clamp-1">
+                  <p className="text-xs text-gray-400 italic mt-1 line-clamp-2">
                     {game.notes}
                   </p>
                 )}
               </div>
 
-              {/* Status badge */}
               <span
-                className={`shrink-0 text-xs font-semibold px-3 py-1 rounded-full border capitalize ${
-                  STATUS_COLORS[game.status] || "bg-gray-600 text-gray-300"
-                }`}
+                className={`shrink-0 text-xs font-semibold px-3 py-1 rounded-full border capitalize ${STATUS_COLORS[game.status] || "bg-gray-600 text-gray-300"}`}
               >
                 {game.status}
               </span>

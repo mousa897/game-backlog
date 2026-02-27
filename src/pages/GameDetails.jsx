@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGames } from "../context/GameContext";
 import DOMPurify from "dompurify";
 import { useRawg } from "../hooks/useRawg";
+import toast from "react-hot-toast";
 
 function GameDetails() {
   const { games, setGames } = useGames();
@@ -11,7 +12,7 @@ function GameDetails() {
   function handleAddGame() {
     const alreadyAdded = games.some((g) => g.id === game.id);
     if (alreadyAdded) {
-      alert("Game is already in your backlog!");
+      toast.error("Already in your backlog!");
       return;
     }
     const newGame = {
@@ -24,7 +25,7 @@ function GameDetails() {
       image: game.background_image,
     };
     setGames([...games, newGame]);
-    alert("Game added to your backlog!");
+    toast.success("Added to your wishlist!");
   }
 
   if (loading)
