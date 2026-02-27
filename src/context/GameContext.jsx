@@ -12,7 +12,41 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const GameContext = createContext();
 
-const initialGames = [];
+const initialGames = [
+  {
+    id: crypto.randomUUID(),
+    title: "The Witcher 3: Wild Hunt",
+    platform: "PC",
+    genre: "RPG",
+    status: "completed",
+    notes: "One of the best RPGs ever made. The DLCs are a must play.",
+    rating: 3,
+    image:
+      "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6bcdbc.jpg",
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Red Dead Redemption 2",
+    platform: "PS5",
+    genre: "Action",
+    status: "playing",
+    notes: "Incredible story and world. Take your time with this one.",
+    rating: 5,
+    image:
+      "https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Hollow Knight",
+    platform: "PC",
+    genre: "Metroidvania",
+    status: "wishlist",
+    notes: "",
+    rating: null,
+    image:
+      "https://media.rawg.io/media/games/4cf/4cfc6b7f1850590a4634b08bfab308ab.jpg",
+  },
+];
 
 export function GameProvider({ children }) {
   // game list
