@@ -8,6 +8,7 @@ function BacklogStats() {
   const paused = games.filter((g) => g.status === "paused").length;
   const dropped = games.filter((g) => g.status === "dropped").length;
   const wishlist = games.filter((g) => g.status === "wishlist").length;
+  const totalHours = games.reduce((sum, g) => sum + (g.hoursPlayed || 0), 0);
 
   const ratedGames = games.filter((g) => g.rating);
   const avgRating =
@@ -87,14 +88,21 @@ function BacklogStats() {
         ))}
       </div>
 
-      {/* Average rating — only shows if at least one game is rated */}
-      {avgRating && (
-        <div className="mt-4 pt-4 border-t border-gray-700/50 flex items-center gap-2">
-          <span className="text-sm text-gray-400">Average Rating</span>
-          <span className="text-sm font-bold text-white">⭐ {avgRating}</span>
-          <span className="text-xs text-gray-500">/ 5</span>
-        </div>
-      )}
+      <div className="mt-4 pt-4 border-t border-gray-700/50 flex flex-wrap gap-6 items-center">
+        {avgRating && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400">Average Rating</span>
+            <span className="text-sm font-bold text-white">⭐ {avgRating}</span>
+            <span className="text-xs text-gray-500">/ 5</span>
+          </div>
+        )}
+        {totalHours > 0 && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-400">Total Hours</span>
+            <span className="text-sm font-bold text-white">{totalHours}h</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

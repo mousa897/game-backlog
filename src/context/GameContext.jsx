@@ -21,6 +21,7 @@ const initialGames = [
     status: "completed",
     notes: "One of the best RPGs ever made. The DLCs are a must play.",
     rating: 3,
+    hoursPlayed: 112,
     image:
       "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6bcdbc.jpg",
   },
@@ -32,6 +33,7 @@ const initialGames = [
     status: "playing",
     notes: "Incredible story and world. Take your time with this one.",
     rating: 5,
+    hoursPlayed: 34,
     image:
       "https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",
   },
@@ -43,6 +45,7 @@ const initialGames = [
     status: "wishlist",
     notes: "",
     rating: null,
+    hoursPlayed: null,
     image:
       "https://media.rawg.io/media/games/4cf/4cfc6b7f1850590a4634b08bfab308ab.jpg",
   },

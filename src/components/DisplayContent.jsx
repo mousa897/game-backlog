@@ -229,6 +229,11 @@ function DisplayContent({ autoScrollRef }) {
                   {game.platform} · {game.genre}
                 </p>
                 <p className="text-xs mt-1">{renderStars(game.rating)}</p>
+                {game.hoursPlayed && (
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {game.hoursPlayed}h played
+                  </p>
+                )}
                 {game.notes && (
                   <p className="text-xs text-gray-400 italic mt-1 line-clamp-2">
                     {game.notes}

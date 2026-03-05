@@ -11,6 +11,7 @@ function GameForm({ autoScrollRef }) {
   const [image, setImage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [rating, setRating] = useState("");
+  const [hoursPlayed, setHoursPlayed] = useState("");
 
   const {
     setGames,
@@ -42,6 +43,7 @@ function GameForm({ autoScrollRef }) {
       setNotes(editGame.notes);
       setImage(editGame.image || "");
       setRating(editGame.rating || "");
+      setHoursPlayed(editGame.hoursPlayed || "");
     }
   }, [editGame]);
 
@@ -61,35 +63,36 @@ function GameForm({ autoScrollRef }) {
                 status,
                 notes,
                 rating: rating ? Number(rating) : null,
+                hoursPlayed: hoursPlayed ? Number(hoursPlayed) : null,
               }
             : game,
         ),
       );
       setEditGame(null);
       return toast.success("Game updated successfully!");
-    } else {
-      const alreadyExists = games.some(
-        (game) => game.title.toLowerCase() === title.toLowerCase(),
-      );
-      if (alreadyExists) {
-        toast.error("This game is already in your list!");
-        return;
-      }
-      setGames((prev) => [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          title,
-          platform,
-          genre,
-          status,
-          notes,
-          rating: rating ? Number(rating) : null,
-          image,
-        },
-      ]);
     }
 
+    const alreadyExists = games.some(
+      (game) => game.title.toLowerCase() === title.toLowerCase(),
+    );
+    if (alreadyExists) {
+      toast.error("This game is already in your list!");
+      return;
+    }
+
+    const newGame = {
+      id: crypto.randomUUID(),
+      title,
+      platform,
+      genre,
+      status,
+      notes,
+      rating: rating ? Number(rating) : null,
+      hoursPlayed: hoursPlayed ? Number(hoursPlayed) : null,
+      image,
+    };
+
+    setGames((prev) => [...prev, newGame]);
     toast.success("Game added to your backlog!");
 
     setTitle("");
@@ -99,6 +102,7 @@ function GameForm({ autoScrollRef }) {
     setNotes("");
     setImage("");
     setRating("");
+    setHoursPlayed("");
   }
 
   const inputClass =
@@ -216,6 +220,19 @@ function GameForm({ autoScrollRef }) {
             <option value="paused">Paused</option>
             <option value="dropped">Dropped</option>
           </select>
+        </div>
+
+        {/* Hours Played */}
+        <div className="flex flex-col">
+          <label className={labelClass}>Hours Played</label>
+          <input
+            type="number"
+            min="0"
+            placeholder="e.g. 42"
+            className={inputClass}
+            value={hoursPlayed}
+            onChange={(e) => setHoursPlayed(e.target.value)}
+          />
         </div>
 
         {/* Rating */}
