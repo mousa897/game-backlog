@@ -1,5 +1,17 @@
 import GameSection from "../components/GameSection";
 
+const today = new Date().toISOString().split("T")[0];
+
+const futureDate = new Date();
+futureDate.setMonth(futureDate.getMonth() + 6);
+const future = futureDate.toISOString().split("T")[0];
+
+const thisYear = new Date().getFullYear();
+
+new Date(new Date().setMonth(new Date().getMonth() - 3))
+  .toISOString()
+  .split("T")[0];
+
 function Discover() {
   return (
     <div className="bg-gray-900 min-h-screen">
@@ -17,24 +29,24 @@ function Discover() {
 
         {/* Sections */}
         <div className="flex flex-col gap-12">
-          <GameSection title="Popular Games" endpoint="&ordering=-added" />
           <GameSection
-            title="Highest Rated"
-            endpoint="&ordering=-rating&dates=2000-01-01,2025-12-31"
+            title="Popular Games"
+            endpoint="&ordering=-added&metacritic=80,100"
           />
+          <GameSection title="Highest Rated" endpoint="&ordering=-metacritic" />
           <GameSection
-            title="Highest Rated of 2025"
-            endpoint="&dates=2025-01-01,2025-12-31&ordering=-rating"
+            title={`Best Games of ${thisYear}`}
+            endpoint={`&dates=${thisYear}-01-01,${thisYear}-12-31&ordering=-rating`}
           />
           <GameSection
             title="Recently Released"
-            endpoint="&dates=2025-01-01,2025-12-31&ordering=-added"
-          />
-          <GameSection
-            title="Upcoming Games"
-            endpoint="&dates=2026-01-01,2026-03-01&ordering=-added"
+            endpoint={`&dates=${new Date(new Date().setMonth(new Date().getMonth() - 3)).toISOString().split("T")[0]},${today}&ordering=-added`}
           />
           <GameSection title="Indie Games" endpoint="&genres=indie" />
+          <GameSection
+            title="Upcoming Games"
+            endpoint={`&dates=${today},${future}&ordering=-added`}
+          />
         </div>
       </div>
     </div>

@@ -54,7 +54,10 @@ function GameSection({ title, endpoint }) {
               {/* Image */}
               <div className="relative overflow-hidden h-44">
                 <img
-                  src={game.background_image || "/placeholder.png"}
+                  src={
+                    game.background_image ||
+                    "https://placehold.co/400x300?text=No+Image"
+                  }
                   alt={game.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
