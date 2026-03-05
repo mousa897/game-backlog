@@ -1,6 +1,6 @@
 # 🎮 Gamers' Hub
 
-A personal game backlog tracker built with React. Search for games, track your progress, discover new titles, and manage your gaming library — all in one place.
+A personal game backlog tracker built with React. Search for games, track your progress, discover new titles, and manage your gaming library. All in one place.
 
 ---
 
